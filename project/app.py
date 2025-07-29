@@ -1,3 +1,14 @@
+import os, sys
+# Ensure the project root is on the Python path so that the local `minitorch` package
+# (sibling to the `project` directory) can be imported when this script is executed
+# via `streamlit run project/app.py`. Without this adjustment, Python adds the
+# script's directory (`project`) to `sys.path` but not its parent directory,
+# causing it to fall back to any globally installed `minitorch` package, which
+# may be missing the APIs expected by this repository.
+
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
 from argparse import ArgumentParser
 
 import streamlit as st
