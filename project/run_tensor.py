@@ -22,7 +22,17 @@ class Network(minitorch.Module):
 
     def forward(self, x):
         # TODO: Implement for Task 2.5.
-        raise NotImplementedError("Need to implement for Task 2.5")
+        # Pass through layer1 with ReLU activation
+        h1 = self.layer1.forward(x).relu()
+        
+        # Pass through layer2 with ReLU activation
+        h2 = self.layer2.forward(h1).relu()
+        
+        # Pass through layer3 (output layer, no activation for logits)
+        out = self.layer3.forward(h2)
+        
+        # Apply sigmoid for binary classification probability
+        return out.sigmoid()
 
 
 class Linear(minitorch.Module):
@@ -34,7 +44,12 @@ class Linear(minitorch.Module):
 
     def forward(self, x):
         # TODO: Implement for Task 2.5.
-        raise NotImplementedError("Need to implement for Task 2.5")
+        # Linear transformation: x @ weights + bias
+        # x shape: (batch_size, in_size)
+        # weights shape: (in_size, out_size)
+        # bias shape: (out_size,)
+        batch_size = x.shape[0]
+        return x @ self.weights.value + self.bias.value.view(1, self.out_size)
 
 
 def default_log_fn(epoch, total_loss, correct, losses):
